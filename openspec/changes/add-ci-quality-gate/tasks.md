@@ -7,8 +7,8 @@
 
 ## 2. CI Workflow Scaffold
 
-- [ ] 2.1 Create `.github/workflows/ci.yml` with `pull_request` and `push` (main branch) triggers and a single job named `ci`; verify the file is valid YAML and the job runs when a pull request is opened.
-- [ ] 2.2 Add a checkout step and an `actions/setup-go` step that reads the Go version from `go.mod` (`go-version-file: go.mod`) with module caching; verify the run reports the same Go version that `go.mod` declares.
+- [x] 2.1 Create `.github/workflows/ci.yml` with `pull_request` and `push` (main branch) triggers and a single job named `ci`; verify the file is valid YAML and the job runs when a pull request is opened.
+- [x] 2.2 Add a checkout step and an `actions/setup-go` step that reads the Go version from `go.mod` (`go-version-file: go.mod`) with module caching; verify the run reports the same Go version that `go.mod` declares.
 
 ## 3. Gate Checks
 
@@ -20,7 +20,7 @@
 
 ## 4. Enforcement
 
-- [ ] 4.1 Confirm the workflow reports a single status check named `ci` and that it is green on the current module; verify by observing the check on a pull request against `main`.
+- [x] 4.1 Confirm the workflow reports a single status check named `ci` and that it is green on the current module; verify by observing the check on a pull request against `main`.
 - [ ] 4.2 Add the `ci` check as a required status check on the `main` branch; verify a failing check blocks merge and a passing check allows it.
 
 ## 5. Documentation
