@@ -1,0 +1,71 @@
+name: ci
+
+# Quality gate for the module.
+#
+# Runs on every pull request and on pushes to main. Expected to be configured as
+# a required status check on `main` so a red run blocks merge. The single job is
+# named `ci` so it reports one check name. See
+# openspec/specs/continuous-integration for the behaviour contract.
+#
+# Runs on the native runner toolchain rather than the Docker dev container: the
+# "no host Go" rule is a local-development constraint, not a CI requirement. The
+# Go version is read from go.mod so CI always matches the module's target.
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Cancel superseded runs on the same ref; a gate only needs to report on the
+# latest commit.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v7
+
+      - name: Set up Go
+        uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+          cache: true
+
+      - name: Build
+        run: go build ./...
+
+      - name: Vet
+        run: go vet ./...
+
+      - name: Check formatting
+        run: |
+          unformatted="$(gofmt -l .)"
+          if [ -n "$unformatted" ]; then
+            echo "These files are not gofmt-clean:"
+            echo "$unformatted"
+            exit 1
+          fi
+
+      - name: Check module tidiness
+        run: |
+          go mod tidy
+          git diff --exit-code -- go.mod go.sum
+
+      - name: Test (race detector)
+        run: go test -race ./...
+
+      - name: Lint
+        uses: golangci/golangci-lint-action@v9
+        with:
+          # Pinned to the release recorded in .golangci.yml so local and CI runs
+          # report identical findings.
+          version: v2.14.0

@@ -1,0 +1,23 @@
+# golangci-lint configuration for the ponder-media-catalog module.
+#
+# Pinned version: v2.14.0 (see the Lint step in .github/workflows/ci.yml and the
+# README). Install and run the same release locally so a local run and a CI run
+# report identical findings. This file uses the v2 configuration schema.
+#
+# Scope: start from the linter set golangci-lint enables by default ("standard").
+# Add linters only where a rule earns its keep; do not disable the defaults
+# wholesale. See https://golangci-lint.run/docs/configuration/file/
+
+version: "2"
+
+run:
+  timeout: 5m
+
+linters:
+  default: standard
+
+issues:
+  # Report every finding rather than truncating, so the gate never hides issues
+  # behind a per-linter or per-issue cap.
+  max-issues-per-linter: 0
+  max-same-issues: 0
