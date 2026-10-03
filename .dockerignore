@@ -1,0 +1,21 @@
+# Keep the Docker build context small. Nothing is COPY'd into the image today,
+# but excluding VCS metadata, build output and local databases keeps builds
+# fast and avoids ever shipping secrets or state into an image layer.
+.git
+.hermes
+bin/
+
+# Local catalog databases (including SQLite WAL sidecars)
+*.db
+*.db-wal
+*.db-shm
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+
+# Local environment overrides
+.env
+.env.local
