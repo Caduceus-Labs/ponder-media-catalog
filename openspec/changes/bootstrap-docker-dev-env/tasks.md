@@ -10,7 +10,7 @@
 
 - [x] 2.1 Run `go mod init github.com/Caduceus-Labs/ponder-media-catalog` in the container and verify `go.mod` appears with the correct module path.
 - [x] 2.2 `go get` the four direct dependencies (cobra, `modernc.org/sqlite`, `golang-migrate/migrate/v4`, `testify`) and verify `go.mod`/`go.sum` list them and `go mod tidy` reports no changes.
-- [ ] 2.3 Commit `go.mod` and `go.sum` and verify a clean checkout resolves with `go build ./...` returning success.
+- [x] 2.3 Commit `go.mod` and `go.sum` and verify a clean checkout resolves with `go build ./...` returning success.
 
 ## 3. Layout and Entrypoint
 
@@ -30,4 +30,4 @@
 - [x] 5.1 From a clean checkout with no host Go, run `make vet`, `make test`, and `make build` and verify all succeed using only the container.
 - [x] 5.2 Verify database persistence: create a file under the `catalog-data` volume path, recreate the container, and confirm the file is still present.
 - [x] 5.3 Verify file ownership: generate a file in the bind mount and confirm its mode is group- and world-readable (`664`).
-- [ ] 5.4 Tick the completed Phase 0 checkboxes (0.3–0.5) on issue #3 and note the Docker dev environment.
+- [x] 5.4 Tick the completed Phase 0 checkboxes (0.3–0.5) on issue #3 and note the Docker dev environment.
