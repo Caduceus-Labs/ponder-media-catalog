@@ -23,8 +23,8 @@ func Execute() error {
 
 func newRootCommand() *cobra.Command {
 	root := &cobra.Command{
-		Use:           "ponder-catalog",
-		Short:         "Build and publish the public Ponder media catalog",
+		Use:   "ponder-catalog",
+		Short: "Build and publish the public Ponder media catalog",
 		Long: "ponder-catalog ingests media metadata from external sources into a\n" +
 			"local catalog database and publishes the public JSON consumed by the\n" +
 			"Ponder application. Each job is a one-shot command started by an\n" +
