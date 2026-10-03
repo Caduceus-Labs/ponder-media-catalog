@@ -1,0 +1,33 @@
+# Development environment for ponder-media-catalog.
+#
+# One service, `dev`, runs every Go operation (build, test, vet, shell) inside
+# the pinned toolchain from Dockerfile.dev. The repository is bind-mounted for
+# live edits; module/build caches and the catalog data directory live on named
+# volumes so they survive container recreation and never enter the image.
+#
+#   docker compose run --rm dev go test ./...
+#   make test           # convenience wrapper (see Makefile)
+#
+# HOST_UID/HOST_GID (exported by the Makefile) run the container as the host
+# user so generated files stay readable to the developer's editor.
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: ponder-catalog-dev
+    working_dir: /src
+    user: "${HOST_UID:-1000}:${HOST_GID:-1000}"
+    environment:
+      CGO_ENABLED: "0"
+      CATALOG_DATA_DIR: /data
+    volumes:
+      - .:/src
+      - go-mod-cache:/go/pkg/mod
+      - go-build-cache:/go/cache
+      - catalog-data:/data
+
+volumes:
+  go-mod-cache:
+  go-build-cache:
+  catalog-data:
