@@ -1,0 +1,39 @@
+# syntax=docker/dockerfile:1
+
+# Development toolchain for the ponder-media-catalog Go module.
+#
+# Pinned to the Go 1.25 toolchain declared in go.mod so builds and tests are
+# reproducible. The resolved digest is recorded below; refresh it deliberately
+# (never rely on a floating tag).
+#
+#   golang:1.25-bookworm@sha256:3b4a11519ad929d1e1d261a12cff056f0c85b735253d7d861346b9c6f8b36437
+FROM golang:1.25-bookworm@sha256:3b4a11519ad929d1e1d261a12cff056f0c85b735253d7d861346b9c6f8b36437
+
+# modernc.org/sqlite is a pure-Go driver, so no C toolchain is required. The
+# same flag also produces the static production binary.
+ENV CGO_ENABLED=0
+
+# The dev service runs as the host UID/GID (see compose.yaml) so files written
+# into the bind mount stay owned by the developer. Give that non-root user
+# writable home, module cache and build cache paths.
+ENV HOME=/home/dev \
+    GOPATH=/go \
+    GOMODCACHE=/go/pkg/mod \
+    GOCACHE=/go/cache
+
+RUN mkdir -p /home/dev /go/pkg/mod /go/cache /data \
+ && chmod -R 0777 /home/dev /go /data \
+ && printf 'umask 002\n' >> /etc/profile
+
+# The repository is bind-mounted from the host and owned by the host user, so
+# git refuses to operate on it without an explicit trust entry. The publisher
+# also drives git, so this is required at runtime, not just for `go build`.
+RUN git config --system --add safe.directory /src
+
+WORKDIR /src
+
+# Apply a permissive umask so files written into the bind mount are group- and
+# world-readable (664), then exec the requested command. Works for one-shot
+# `run` invocations and for the interactive shell alike.
+ENTRYPOINT ["sh", "-c", "umask 002; exec \"$@\"", "--"]
+CMD ["bash"]
