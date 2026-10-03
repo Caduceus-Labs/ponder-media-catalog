@@ -29,4 +29,4 @@
 
 ## 6. Integration Verification
 
-- [ ] 6.1 From a clean checkout, run the full gate and confirm it passes end to end; then on a throwaway branch introduce one failing condition per check (compile error, vet finding, unformatted file, stale module file, failing test, lint finding) and confirm the required `ci` check blocks merge; verify removing them restores a green, mergeable state.
+- [x] 6.1 From a clean checkout, run the full gate and confirm it passes end to end; then on a throwaway branch introduce one failing condition per check (compile error, vet finding, unformatted file, stale module file, failing test, lint finding) and confirm the required `ci` check blocks merge; verify removing them restores a green, mergeable state.
