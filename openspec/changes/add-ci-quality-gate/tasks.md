@@ -21,7 +21,7 @@
 ## 4. Enforcement
 
 - [x] 4.1 Confirm the workflow reports a single status check named `ci` and that it is green on the current module; verify by observing the check on a pull request against `main`.
-- [ ] 4.2 Add the `ci` check as a required status check on the `main` branch; verify a failing check blocks merge and a passing check allows it.
+- [x] 4.2 Add the `ci` check as a required status check on the `main` branch; verify a failing check blocks merge and a passing check allows it.
 
 ## 5. Documentation
 
